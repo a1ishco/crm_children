@@ -230,8 +230,8 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 
 export {
   _extends,
-  _objectWithoutPropertiesLoose,
-  require_react_is
+  require_react_is,
+  _objectWithoutPropertiesLoose
 };
 /*! Bundled license information:
 
@@ -246,4 +246,4 @@ react-is/cjs/react-is.development.js:
    * LICENSE file in the root directory of this source tree.
    *)
 */
-//# sourceMappingURL=chunk-X3EECURS.js.map
+//# sourceMappingURL=chunk-752RMXNR.js.map

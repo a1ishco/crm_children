@@ -1,7 +1,7 @@
-import React from "react"
+import React from "react";
 import { Modal, Form, Input, Button, Row, Flex, Card } from "antd";
 import ChildrenForm from "./ChildrenForm";
-import {PlusOutlined} from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 const ChildrenModal = ({
@@ -15,6 +15,7 @@ const ChildrenModal = ({
   closeChildForm,
   initialValues,
   updateModal,
+  loading,
 }) => {
   const [mainFormValid, setMainFormValid] = useState(false);
 
@@ -81,6 +82,7 @@ const ChildrenModal = ({
             id="all_submit"
             disabled={childrenForms?.length === 0}
             onClick={() => form.submit()}
+            loading={loading}
           >
             Submit
           </Button>
@@ -96,8 +98,8 @@ const ChildrenModal = ({
           form={form}
           onValuesChange={handleMainFormChange}
         >
-          <Flex justify="space-between" >
-            <div style={{width:240}}>
+          <Flex justify="space-between">
+            <div style={{ width: 240 }}>
               <Form.Item
                 name="last_name"
                 label="Last Name"
@@ -153,17 +155,18 @@ const ChildrenModal = ({
                   closeChildForm={closeChildForm}
                 />
               ))}
-              <Card id="add_card" style={{padding:0 }}>
-
-              <Button id="add_child_btn" onClick={showChildForm} disabled={!mainFormValid}>
-           <PlusOutlined/>
-          </Button>
+              <Card id="add_card" style={{ padding: 0 }}>
+                <Button
+                  id="add_child_btn"
+                  onClick={showChildForm}
+                  disabled={!mainFormValid}
+                >
+                  <PlusOutlined />
+                </Button>
               </Card>
             </div>
-            
           </Flex>
         </Form>
-        
       </Row>
     </Modal>
   );

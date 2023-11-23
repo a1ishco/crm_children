@@ -4,7 +4,7 @@ import { Button, Form, Input, message } from "antd";
 import { AiOutlineUser, AiOutlineLock } from "react-icons/ai";
 import { LoginType } from "../../types/auth/authTypes";
 import { login } from "../../api/auth/loginAuth";
-import { validateEmail } from "../../helper/validator";
+import { validateEmail } from "../../utils/helper/validator";
 import "../auth/auth.scss";
 import { Logo } from "../../components/common/logos/Logo";
 import { useDispatch } from "react-redux";

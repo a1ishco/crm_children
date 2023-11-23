@@ -1,8 +1,7 @@
 .layout_all {
   .ant_header,
   .antSider {
-  overflow: hidden;
-
+    overflow: hidden;
     background-color: #fcfbfc;
     .ant-menu,
     ul {
@@ -17,7 +16,9 @@
       }
     }
   }
-
+  .ant-layout {
+    background-color: #fff;
+  }
   .antSider {
     overflow: auto;
     height: 100vh;
@@ -25,17 +26,22 @@
     top: 0;
     left: 0;
     width: 200;
+
+    .ant-layout-sider-children {
+      padding: 10px;
+    }
     .ant-layout-sider-trigger {
       display: none;
     }
     #logo {
+      padding: 10px;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 64px !important;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       border-bottom: 1px solid rgba(129, 128, 128, 0.5);
+      svg {
+        height: 50px !important;
+      }
     }
 
     .ant-menu-item-selected,
@@ -48,7 +54,6 @@
       margin-top: 5px;
       color: #000;
       border-radius: 5px !important;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
     .ant-menu-item-active {
       background: #2121215d;
@@ -56,7 +61,6 @@
     }
     .ant-menu-item-active:hover {
       background: #2121215d;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     li {
@@ -83,6 +87,7 @@
     }
   }
   .layout_header {
+    padding: 10px;
     .ant_header {
       display: flex;
       position: sticky;
@@ -112,13 +117,16 @@
     .page_header_flex_main {
       padding-inline: 20px;
       background-color: #fff;
-      line-height: 20px;
+      line-height: 16px;
+      border-bottom: 1px solid rgba(129, 128, 128, 0.5);
       h2 {
         font-weight: 400;
+        margin-bottom: 10px;
       }
       p {
         font-style: italic;
         color: gray;
+        margin-top: 0px;
       }
       .page_header_button {
         display: flex;
@@ -132,48 +140,54 @@
 .layout_all .antSider .ant-menu-item-selected {
   color: #fff !important;
 }
+.flex_sider_content {
+  height: 100%;
+}
 .header_right {
   margin: 4px;
   font-weight: 600;
   color: #000;
-  position: fixed;
   display: flex;
   flex-direction: column;
-  bottom: 0;
-  height: 90px;
-  line-height: 48px;
-  text-align: center;
+  gap: 15px;
   transition: all 0.3s;
   cursor: pointer;
-  align-items: center;
-  .user_settings{
+  align-items: left;
+  .ant-divider{
+    margin: 0;
+  }
+  .user_settings {
     display: flex;
-    width: 80%;
     justify-content: space-around;
     align-items: baseline;
-    span{
+    .ant-avatar {
+      width: 30px;
+      height: 30px;
+    }
+    span {
       text-wrap: wrap;
     }
   }
   #logout_btn {
+    display: flex;
     font-weight: 600;
+    width: 100%;
     text-align: center;
     border: 0;
     color: #000;
-    width: fit-content;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-
-  
+    align-items: center;
+    span:last-child {
+      margin-left: 25px;
+    }
+    svg {
+      font-size: 20px;
+    }
   }
-  #logout_btn:hover{
-    color: #fff;
-    filter: drop-shadow(0 0 0.1rem rgb(0, 0, 0)); 
+  #logout_btn:hover {
+    color: #000;
+    background-color: #fff;
   }
-
 }
 main {
-  background: #fcfbfc;
-}
-aside{
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  background: #fff;
 }

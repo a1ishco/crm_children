@@ -9,6 +9,7 @@
         border-radius: 8px;
         box-shadow: 0 0 2px 1px #efefef;
         padding: 32px;
+        padding-top: 0px;
         width: 20%;
         .logo{
             align-items: center;
@@ -16,6 +17,9 @@
             justify-content: center;
             margin-bottom: 16px;
             margin-top: 16px;
+            svg{
+                height: 50px !important;
+            }
         }
         .submitBtn{
             background-color: #f2f2f23b;

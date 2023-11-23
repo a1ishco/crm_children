@@ -1,12 +1,14 @@
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-nocheck
-import React from "react"
+import React from "react";
 import { useState } from "react";
-import { Form, message, Flex, Button, Input } from "antd";
+import { Form, message, Button, Input } from "antd";
 import { useDispatch } from "react-redux";
-import ChildrenTable from "./ChildrenTable";
-import ChildrenModal from "./ChildrenModal";
+import ChildrenTable from "./components/ChildrenTable";
+import ChildrenModal from "./components/ChildrenModal";
 import { setCustomerChildData } from "../../redux/customer/customerChildReducer";
+import _ from "lodash";
 import {
   childrenCreateSubmit,
   childrenGet,
@@ -15,6 +17,7 @@ import {
 } from "../../api/children/children";
 import "./children.scss";
 import { UserAddOutlined } from "@ant-design/icons";
+import PageHeader from "../../components/common/header";
 
 const Children = () => {
   const [form] = Form.useForm();
@@ -23,10 +26,10 @@ const Children = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [childrenForms, setChildrenForms] = useState<{ key: number }[]>([]);
   const [searchText, setSearchText] = useState("");
+  const [loading, setLoading] = useState(false);
   const [updateModalInitialValues, setUpdateModalInitialValues] =
     useState(null);
-    const [updatedChildDatas, setUpdatedChildDatas] =
-    useState(null);
+  const [updatedChildDatas, setUpdatedChildDatas] = useState(null);
   const showCreateModal = () => {
     setIsCreateModalVisible(true);
     form.resetFields();
@@ -36,7 +39,7 @@ const Children = () => {
     try {
       const result = await childrenRetriew(record?.id);
       const datas = result?.data;
-      setUpdatedChildDatas(datas?.children)      
+      setUpdatedChildDatas(datas?.children);
       form.setFieldsValue({
         last_name: datas.last_name,
         first_name: datas.first_name,
@@ -102,6 +105,7 @@ const Children = () => {
   };
 
   const onFinishCreate = async (values) => {
+    setLoading(true);
     try {
       const customerValues = {
         last_name: values.last_name,
@@ -141,11 +145,11 @@ const Children = () => {
         message.success("SUBMITTED");
         setIsCreateModalVisible(false);
         setChildrenForms([]);
+        setLoading(false);
       } else {
         message.error("ERROR OCCURRED");
-        setIsCreateModalVisible(false);
+        setIsCreateModalVisible(true);
       }
-    
     } catch (error) {
       console.error("Error:", error);
     }
@@ -154,7 +158,8 @@ const Children = () => {
   const onFinishUpdate = async (values) => {
     console.log("updateModalInitialValues", updateModalInitialValues.children);
     console.log("updatedChildDatas", updatedChildDatas);
-  
+    setLoading(true);
+
     try {
       const customerValues = {
         id: updateModalInitialValues?.id,
@@ -165,24 +170,22 @@ const Children = () => {
           values.phone_number_optional,
         ].filter(Boolean),
       };
-  
+
       const childFormValues = updatedChildDatas.map((updatedChild, key) => {
         const childValues = form.getFieldsValue(
           Object.values(getChildFormFields(key))
         );
-  
+
         const hasChildChanged =
           updatedChild &&
-          (childValues[`child_first_name_${key}`] !==
-            updatedChild.first_name ||
+          (childValues[`child_first_name_${key}`] !== updatedChild.first_name ||
             childValues[`child_last_name_${key}`] !== updatedChild.last_name ||
             new Date(childValues[`child_birth_date_child_${key}`])
               .toISOString()
               .split("T")[0] !== updatedChild.birth_of_date ||
-            (childValues[`child_gender_child_${key}`] === "Male"
-              ? 1
-              : 2) !== updatedChild.gender);
-  
+            (childValues[`child_gender_child_${key}`] === "Male" ? 1 : 2) !==
+              updatedChild.gender);
+
         return hasChildChanged
           ? {
               id: updatedChild.id,
@@ -199,22 +202,26 @@ const Children = () => {
             }
           : null;
       });
-  
+
       const changedChildFormValues = childFormValues.filter(
         (childValue) => childValue !== null
       );
-  
+
       const allValues = {
         ...customerValues,
         children: changedChildFormValues,
       };
-  
+      console.log("changedChildFormValues",changedChildFormValues);
+      
+
       const result = await childrenUpdate(
         allValues,
         updateModalInitialValues?.id
       );
       if (result.success) {
         message.success("UPDATED");
+        setLoading(false);
+
         // setIsUpdateModalVisible(false);
       } else {
         message.error("ERROR OCCURRED");
@@ -223,7 +230,6 @@ const Children = () => {
       console.error("Error:", error);
     }
   };
-  
 
   const fetchData = async (searchParam) => {
     try {
@@ -233,35 +239,36 @@ const Children = () => {
       console.error("Error:", error);
     }
   };
-
-
-
+  const handleSearchChange = _.debounce((value) => {
+    setSearchText(value);
+    fetchData(value);
+  }, 500);
   return (
     <>
-      <Flex className="page_header_flex_main" justify="space-between">
-        <div className="page_header_text">
-          <h2>Children</h2>
-          <p>You can add children here</p>
-        </div>
-        <div className="page_header_button">
-          <Input
-            placeholder="Search"
-            onChange={(e) => {
-              const searchText = e.target.value;
-              setSearchText(searchText);
-              fetchData(searchText);
-            }}
-            id="search_input_table"
-          />
-          <Button id="create_customer" onClick={showCreateModal}>
-            <>
-              <UserAddOutlined />
-              {/* Create customer */}
-            </>
-          </Button>
-        </div>
-      </Flex>
-      <ChildrenTable onUpdate={handleUpdate} search={searchText} onCreate={onFinishCreate}/>
+      <PageHeader
+        title="Children"
+        subtitle="You can add children here"
+        extras={
+          <>
+            <Input
+              placeholder="Search"
+              onChange={(e) => handleSearchChange(e.target.value)}
+              id="search_input_table"
+            />
+            <Button id="create_customer" onClick={showCreateModal}>
+              <>
+                <UserAddOutlined />
+                {/* Create customer */}
+              </>
+            </Button>
+          </>
+        }
+      />
+      <ChildrenTable
+        onUpdate={handleUpdate}
+        search={searchText}
+        onCreate={onFinishCreate}
+      />
       <ChildrenModal
         title={"Create Customer"}
         isModalVisible={isCreateModalVisible}
@@ -273,6 +280,7 @@ const Children = () => {
         closeChildForm={closeChildForm}
         initialValues={null}
         updateModal={false}
+        loading={loading}
       />
       <ChildrenModal
         title={"Update Customer"}
@@ -285,6 +293,7 @@ const Children = () => {
         closeChildForm={closeChildForm}
         initialValues={updateModalInitialValues}
         updateModal={true}
+        loading={loading}
       />
     </>
   );

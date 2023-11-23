@@ -2,8 +2,9 @@ import {
   API_CHILDREN_CREATE,
   API_CHILDREN_DELETE,
   API_CHILDREN_GET,
+  API_CHILDREN_PAYMENT,
   API_CHILDREN_UPDATE,
-} from "../../constants/API/URLS";
+} from "../../utils/constants/API/URLS";
 
 export const childrenCreateSubmit = async (token: string, payload: object[]) => {
   try {
@@ -26,6 +27,7 @@ export const childrenCreateSubmit = async (token: string, payload: object[]) => 
     return { success: false, error: error };
   }
 };
+
 export const childrenRetriew = async (
   id: number,
 ) => {
@@ -82,10 +84,32 @@ export const childrenGet = async (
   }
 };
 
+export const childrenPrice = async (
+  token: string,
+  customerID: number,
+  childIDs: number[]
+) => {
+  try {
+    const url = `${API_CHILDREN_PAYMENT}${customerID}/price/?children=${childIDs.join('&children=')}`;
 
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    });
 
-
-
+    const responseData = await response.json();
+    if (response.ok) {
+      return { success: true, data: responseData };
+    } else {
+      return { success: false, error: responseData.error };
+    }
+  } catch (error) {
+    return { success: false, error: error };
+  }
+};
 
 export const childrenUpdate = async (payload: object[],id:string) => {
   try {

@@ -1,3 +1,4 @@
+@import "../../styles/variables";
 .ant-modal {
   margin-top: -50px;
   width: max-content !important;
@@ -26,10 +27,10 @@
     border-color: gray;
   }
 
-  #add_card{
+  #add_card {
     overflow: hidden;
     width: 504px;
-    .ant-card-body{
+    .ant-card-body {
       padding: 0;
     }
     padding: 0px !important;
@@ -44,7 +45,8 @@
 }
 .table_card {
   height: 80%;
-  background-color: #f2f2f2 !important;
+  background-color: #fff;
+  border: 0;
 }
 .table_buttons {
   gap: 10px;
@@ -57,10 +59,18 @@
   display: flex;
   text-align: center;
   align-items: center;
-  background-color: #212121 !important;
   span {
     margin: -7px;
   }
+}
+#edit_btn {
+  background-color: $blue-color;
+}
+#delete_btn {
+  background-color: $red-color;
+}
+#payment_btn {
+  background-color: $green-color;
 }
 .child_form_col {
   height: 400px !important;
@@ -80,7 +90,7 @@
       position: absolute;
       z-index: 10;
       border-radius: 50%;
-      background: #e44044;
+      background: $red-color;
       width: 30px;
       height: 30px;
       margin-top: -15px;
@@ -95,7 +105,49 @@ table {
   table-layout: fixed;
 }
 .payment_modal {
-  width: 50% !important;
+  width: 500px !important;
+  min-width: 10% !important;
+  .ant-spin-nested-loading{
+    width: 100% !important;
+  }
+  .ant-form-item-control-input {
+    width: fit-content;
+  }
+  .ant-modal-body{
+    max-height: 500px;
+    overflow: auto;
+  }
+  .ant-checkbox-group {
+    gap: 10px;
+    font-size: larger;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    .ant-checkbox-inner,
+    :where(.css-dev-only-do-not-override-1adbn6x).ant-checkbox-wrapper:not(
+        .ant-checkbox-wrapper-disabled
+      ):hover
+      .ant-checkbox-checked:not(.ant-checkbox-disabled)
+      .ant-checkbox-inner {
+      border-color: #212121;
+      background-color: #21212160;
+    }
+  }
+  .button_payment_flex{
+    button:first-child{
+      background-color: $green-color;
+
+    }
+    button:last-child{
+      background-color: $blue-color;
+    }
+  }
+  .make_payment_btn {
+    height: 40px;
+    font-weight: 600;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    color: #fff;
+  }
 }
 #create_customer {
   font-weight: 600;
@@ -108,44 +160,22 @@ table {
   border-color: #212121;
   color: #fff;
 }
-.ant-card {
-  margin: 10px;
-  // background-color: #f2f2f2;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  thead {
-    th {
-      background-color: #f2f2f23b !important;
-    }
-  }
-
-
+.table_container{
+  padding: 10px 0 10px 0;
 }
 #search_input_table {
   background-color: #f4f5f3;
   font-weight: 600;
   width: 80%;
   margin-right: 10px;
-
 }
 #search_input_table:hover,
 :where(.css-dev-only-do-not-override-1adbn6x).ant-input:focus,
 :where(.css-dev-only-do-not-override-1adbn6x).ant-input:focus-within {
   border-color: black;
 }
-.ant-tooltip,.ant-tooltip-inner{
+.ant-tooltip,
+.ant-tooltip-inner {
   background-color: #f2f2f2 !important;
-color: #212121 !important;}
-#make_payment_btn{
-  background-color: #212121 !important;
-  color: #f4f5f3;
-  border-color: gray;
-}
-.ant-checkbox-group{
-  font-weight: 600;
-  display: flex;
-  flex-direction: column;
-  .ant-checkbox-inner,:where(.css-dev-only-do-not-override-1adbn6x).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner{
-    background-color: #212121;
-    border-color: #f2f2f2;
-  }
+  color: #212121 !important;
 }

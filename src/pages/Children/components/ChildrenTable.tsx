@@ -19,10 +19,10 @@ import {
   DeleteOutlined,
   DollarOutlined,
 } from "@ant-design/icons";
-import { childrenDelete, childrenGet } from "../../api/children/children";
+import { childrenDelete, childrenGet } from "../../../api/children/children";
 import { useDispatch } from "react-redux";
-import { setCustomerChildData } from "../../redux/customer/customerChildReducer";
-import PaymentModal from "./PaymentModal";
+import { setCustomerChildData } from "../../../redux/customer/customerChildReducer";
+import PaymentModal from "../components/PaymentModal";
 const ChildrenTable = ({ onUpdate, search, onCreate }) => {
   const dispatch = useDispatch();
   const [dataSource, setDataSource] = useState(null);
@@ -63,7 +63,6 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
       key: "actions",
       render: (text, record) => (
         <Flex className="table_buttons">
-          <Tooltip title="Edit">
             <Button
               type="primary"
               onClick={(e) => handleUpdate(record, e)}
@@ -71,8 +70,6 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
             >
               <EditOutlined />
             </Button>
-          </Tooltip>
-          <Tooltip title="Delete">
             <Button
               type="primary"
               danger
@@ -81,8 +78,6 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
             >
               <DeleteOutlined />
             </Button>
-          </Tooltip>
-          <Tooltip title="Payment">
             <Button
               type="primary"
               id="payment_btn"
@@ -90,7 +85,6 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
             >
               <DollarOutlined />
             </Button>
-          </Tooltip>
         </Flex>
       ),
     },
@@ -124,12 +118,13 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
         fetchData(searchText);
       } else {
         message.error("ERROR OCCURRED");
+        fetchData(searchText);
       }
     } catch (error) {
       console.error("An error occurred:", error);
+      fetchData(searchText);
       message.error("ERROR OCCURRED");
     }
-    fetchData(searchText);
   };
 
   const fetchData = async (search, pagination) => {
@@ -173,6 +168,7 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
         const cellText =
           typeof cellValue === "string" ? cellValue : cellValue.toString();
         return cellText?.toLowerCase().includes(search?.toLowerCase());
+        //BAX
       }
 
       return false;
@@ -188,31 +184,24 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
   
 
   return (
-    <Card className="table_card">
-      <Row>
-        <Col xs={24}>
-          {dataSource ? (
-            <Table
+    <div className="table_container">
+    <Spin spinning={!dataSource}>
+      <Table
               dataSource={filteredDataWithoutChildren}
               columns={columns}
               pagination={pagination}
               onChange={handleTableChange}
               handleUpdate={handleUpdate}
             />
-          ) : (
-            <Flex justify="center">
-              <Spin size="large" />
-            </Flex>
-          )}
-        </Col>
-      </Row>
+    </Spin>
+            
       <PaymentModal
         visible={isPaymentModalVisible}
         onCancel={() => setIsPaymentModalVisible(false)}
         record={paymentRecord}
         fetchData={fetchData}
-      />
-    </Card>
+      /></div>
+      
   );
 };
 
