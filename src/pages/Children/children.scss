@@ -1,0 +1,151 @@
+.ant-modal {
+  margin-top: -50px;
+  width: max-content !important;
+  #all_submit {
+    font-weight: 600;
+    color: #fff;
+    background-color: #212121;
+  }
+  #all_submit:disabled {
+    opacity: 0.5;
+    background-color: #21212156;
+    border: 1px dotted black;
+  }
+
+  #add_child_btn {
+    // margin: 25px 10px 10px 10px;
+    width: 100%;
+    overflow: hidden;
+    height: 300px;
+    font-size: 50px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+  }
+  #add_child_btn:hover {
+    background-color: transparent;
+    color: #212121;
+    border-color: gray;
+  }
+
+  #add_card{
+    overflow: hidden;
+    width: 504px;
+    .ant-card-body{
+      padding: 0;
+    }
+    padding: 0px !important;
+  }
+
+  .ant-form {
+    width: 100% !important;
+    .ant-flex {
+      gap: 10px;
+    }
+  }
+}
+.table_card {
+  height: 80%;
+  background-color: #f2f2f2 !important;
+}
+.table_buttons {
+  gap: 10px;
+  overflow: auto;
+}
+#edit_btn,
+#delete_btn,
+#payment_btn {
+  width: 10px;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  background-color: #212121 !important;
+  span {
+    margin: -7px;
+  }
+}
+.child_form_col {
+  height: 400px !important;
+  overflow-y: auto;
+  .child_flex {
+    align-items: end;
+  }
+  .button {
+    position: relative;
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    margin-bottom: 10px;
+    #card_close_button {
+      padding: 0px;
+      color: #fff;
+      position: absolute;
+      z-index: 10;
+      border-radius: 50%;
+      background: #e44044;
+      width: 30px;
+      height: 30px;
+      margin-top: -15px;
+      margin-right: -15px;
+    }
+  }
+  .ant-picker {
+    width: 100%;
+  }
+}
+table {
+  table-layout: fixed;
+}
+.payment_modal {
+  width: 50% !important;
+}
+#create_customer {
+  font-weight: 600;
+  // margin-left: -170px !important;
+}
+:where(.css-dev-only-do-not-override-1adbn6x).ant-btn-default:not(
+    :disabled
+  ):not(.ant-btn-disabled):hover {
+  background-color: #212121;
+  border-color: #212121;
+  color: #fff;
+}
+.ant-card {
+  margin: 10px;
+  // background-color: #f2f2f2;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  thead {
+    th {
+      background-color: #f2f2f23b !important;
+    }
+  }
+
+
+}
+#search_input_table {
+  background-color: #f4f5f3;
+  font-weight: 600;
+  width: 80%;
+  margin-right: 10px;
+
+}
+#search_input_table:hover,
+:where(.css-dev-only-do-not-override-1adbn6x).ant-input:focus,
+:where(.css-dev-only-do-not-override-1adbn6x).ant-input:focus-within {
+  border-color: black;
+}
+.ant-tooltip,.ant-tooltip-inner{
+  background-color: #f2f2f2 !important;
+color: #212121 !important;}
+#make_payment_btn{
+  background-color: #212121 !important;
+  color: #f4f5f3;
+  border-color: gray;
+}
+.ant-checkbox-group{
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  .ant-checkbox-inner,:where(.css-dev-only-do-not-override-1adbn6x).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner{
+    background-color: #212121;
+    border-color: #f2f2f2;
+  }
+}

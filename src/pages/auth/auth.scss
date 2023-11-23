@@ -1,0 +1,38 @@
+.login_page{
+    align-items: center;
+    background-color: #444a59;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    .form_container{
+        border: 1px solid rgba(0,0,0,.1);
+        border-radius: 8px;
+        box-shadow: 0 0 2px 1px #efefef;
+        padding: 32px;
+        width: 20%;
+        .logo{
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+            margin-top: 16px;
+        }
+        .submitBtn{
+            background-color: #e44044;
+            border: none;
+            color: #fff;
+            height: 40px;
+            width: 100%;
+            border-radius: 0;
+            opacity: 1;
+        }
+        .submitBtn:hover{
+            opacity: 0.8;
+            color: #fff;
+
+        }
+        .ant-form-item-explain-error{
+            color: #fff;
+        }
+    }
+}
