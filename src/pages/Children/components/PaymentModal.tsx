@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-nocheck
 import React from "react";
 import {
   Modal,
@@ -12,13 +10,15 @@ import {
   Button,
   Spin,
   Divider,
+  message,
 } from "antd";
 import { useState } from "react";
-import { childrenPrice } from "../../../api/children/children";
+import { childrenPayment, childrenPrice } from "../../../api/children/children";
 
 const PaymentModal = ({ visible, onCancel, record }) => {
   const [loading, setLoading] = useState(false);
   const [loadingPrices, setLoadingPrices] = useState(false);
+  const [childrenID, setChildrenID] = useState([]);
   const [totalPrices, setTotalPrices] = useState("");
   const [childPrices, setChildPrices] = useState([]);
 
@@ -29,6 +29,9 @@ const PaymentModal = ({ visible, onCancel, record }) => {
       const childIDs = values.map(
         (name) => record.children.find((child) => child.first_name === name)?.id
       );
+
+      setChildrenID(childIDs);
+      console.log(childIDs);
 
       const result = await childrenPrice("", customerID, childIDs);
 
@@ -43,10 +46,59 @@ const PaymentModal = ({ visible, onCancel, record }) => {
       message.error("An error occurred during payment");
     }
   };
+
   const handleModalClose = () => {
     setTotalPrices([]);
     setChildPrices([]);
     onCancel();
+  };
+
+  const handleCashPaymentSubmit = async () => {
+    setLoading(true);
+    try {
+      const customerID = record.id;
+      const payload = {
+        children_id: childrenID,
+        payment_type: "cash",
+      };
+      const result = await childrenPayment("", customerID, childrenID, payload);
+
+      if (result.success) {
+        message.success("Cash payment completed successfully");
+        setLoading(false);
+      } else {
+        console.log("ERROR!!");
+        message.error("Payment error occured");
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setLoading(false);
+    }
+  };
+
+  const handleCardPaymentSubmit = async () => {
+    setLoading(true);
+    try {
+      const customerID = record.id;
+      const payload = {
+        children_id: childrenID,
+        payment_type: "card",
+      };
+      const result = await childrenPayment("", customerID, childrenID, payload);
+
+      if (result.success) {
+        message.success("Card payment completed successfully");
+        setLoading(false);
+      } else {
+        console.log("ERROR!!");
+        message.error("Payment error occured");
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -62,6 +114,8 @@ const PaymentModal = ({ visible, onCancel, record }) => {
           loading={loading}
           loadingPrices={loadingPrices}
           totalPrices={totalPrices}
+          onCashPaymentSubmit={handleCashPaymentSubmit}
+          onCardPaymentSubmit={handleCardPaymentSubmit}
         />
       }
     >
@@ -105,14 +159,13 @@ const PaymentModal = ({ visible, onCancel, record }) => {
 
 export default PaymentModal;
 
-const ModalFooter = ({ loading, loadingPrices, totalPrices }) => {
-  const handleCashPaymentSubmit = () => {
-    console.log("CASH");
-  };
-  const handleCardPaymentSubmit = () => {
-    console.log("CARD");
-  };
-  console.log("totalPrices", totalPrices);
+const ModalFooter = ({
+  loading,
+  loadingPrices,
+  totalPrices,
+  onCashPaymentSubmit,
+  onCardPaymentSubmit,
+}) => {
   return (
     <>
       <Divider />
@@ -135,7 +188,7 @@ const ModalFooter = ({ loading, loadingPrices, totalPrices }) => {
             className="make_payment_btn"
             type="primary"
             loading={loading}
-            onClick={handleCashPaymentSubmit}
+            onClick={onCashPaymentSubmit}
           >
             Pay via Cash
           </Button>
@@ -144,7 +197,7 @@ const ModalFooter = ({ loading, loadingPrices, totalPrices }) => {
             type="primary"
             htmlType="submit"
             loading={loading}
-            onClick={handleCardPaymentSubmit}
+            onClick={onCardPaymentSubmit}
           >
             Pay via Card
           </Button>

@@ -111,6 +111,35 @@ export const childrenPrice = async (
   }
 };
 
+export const childrenPayment = async (
+  token: string,
+  customerID: number,
+  childIDs: number[],
+  payload: { children_id: number[]; payment_type: string },
+) => {
+  try {
+    const url = `${API_CHILDREN_PAYMENT}${customerID}/price/?children=${childIDs.join('&children=')}`;
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const responseData = await response.json();
+    if (response.ok) {
+      return { success: true, data: responseData };
+    } else {
+      return { success: false, error: responseData.error };
+    }
+  } catch (error) {
+    return { success: false, error: error };
+  }
+};
+
 export const childrenUpdate = async (payload: object[],id:string) => {
   try {
     const response = await fetch(`${API_CHILDREN_UPDATE}${id}/`, {
