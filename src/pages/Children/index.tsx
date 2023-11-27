@@ -1,4 +1,3 @@
-
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-nocheck
 import React from "react";
@@ -30,6 +29,7 @@ const Children = () => {
   const [updateModalInitialValues, setUpdateModalInitialValues] =
     useState(null);
   const [updatedChildDatas, setUpdatedChildDatas] = useState(null);
+  const [deletedChildForms, setDeletedChildForms] = useState([]);
   const showCreateModal = () => {
     setIsCreateModalVisible(true);
     form.resetFields();
@@ -87,12 +87,18 @@ const Children = () => {
     setChildrenForms([...childrenForms, { key: childrenForms.length }]);
   };
 
-  const closeChildForm = (index) => {
-    form.resetFields(Object.values(getChildFormFields(index)));
-    const updatedForms = [...childrenForms];
-    updatedForms.splice(index, 1);
+  const closeChildForm = (key) => {
+    form.resetFields(Object.values(getChildFormFields(key)));
+  
+    const updatedForms = childrenForms.filter((form) => form.key !== key);
+      const deletedForm = childrenForms.find((form) => form.key === key);
+    if (deletedForm && updatedChildDatas[deletedForm.key]?.id) {
+      setDeletedChildForms([...deletedChildForms, updatedChildDatas[deletedForm.key].id]);
+    }
+  
     setChildrenForms(updatedForms);
   };
+  
 
   const getChildFormFields = (key) => {
     return {
@@ -156,8 +162,6 @@ const Children = () => {
   };
 
   const onFinishUpdate = async (values) => {
-    console.log("updateModalInitialValues", updateModalInitialValues.children);
-    console.log("updatedChildDatas", updatedChildDatas);
     setLoading(true);
 
     try {
@@ -171,60 +175,49 @@ const Children = () => {
         ].filter(Boolean),
       };
 
-      const childFormValues = updatedChildDatas.map((updatedChild, key) => {
+      const childFormValues = childrenForms.map((childForm, key) => {
         const childValues = form.getFieldsValue(
           Object.values(getChildFormFields(key))
         );
 
-        const hasChildChanged =
-          updatedChild &&
-          (childValues[`child_first_name_${key}`] !== updatedChild.first_name ||
-            childValues[`child_last_name_${key}`] !== updatedChild.last_name ||
-            new Date(childValues[`child_birth_date_child_${key}`])
-              .toISOString()
-              .split("T")[0] !== updatedChild.birth_of_date ||
-            (childValues[`child_gender_child_${key}`] === "Male" ? 1 : 2) !==
-              updatedChild.gender);
-
-        return hasChildChanged
-          ? {
-              id: updatedChild.id,
-              first_name: childValues[`child_first_name_${key}`],
-              last_name: childValues[`child_last_name_${key}`],
-              parent: childValues[`parent_full_name_${key}`],
-              birth_of_date: new Date(
-                childValues[`child_birth_date_child_${key}`]
-              )
-                .toISOString()
-                .split("T")[0],
-              gender:
-                childValues[`child_gender_child_${key}`] === "Male" ? 1 : 2,
-            }
-          : null;
+        return {
+          id: updatedChildDatas[key]?.id,
+          first_name: childValues[`child_first_name_${key}`],
+          last_name: childValues[`child_last_name_${key}`],
+          parent: childValues[`parent_full_name_${key}`],
+          birth_of_date: new Date(childValues[`child_birth_date_child_${key}`])
+            .toISOString()
+            .split("T")[0],
+          gender: childValues[`child_gender_child_${key}`] === "Male" ? 1 : 2,
+        };
       });
 
-      const changedChildFormValues = childFormValues.filter(
-        (childValue) => childValue !== null
-      );
-
-      const allValues = {
-        ...customerValues,
-        children: changedChildFormValues,
+      // Include deleted child IDs in the update request
+      const allValuesObject = {
+        last_name: customerValues.last_name,
+        first_name: customerValues.first_name,
+        phone_number: [customerValues.phone_number.join(", ")],
+        children: childFormValues,
+        deleted_children: deletedChildForms,
       };
-      console.log("changedChildFormValues",changedChildFormValues);
-      
 
       const result = await childrenUpdate(
-        allValues,
+        allValuesObject,
         updateModalInitialValues?.id
       );
+      console.log("allValuesObject", allValuesObject);
+      console.log("childFormValues", childFormValues);
+      dispatch(setCustomerChildData(allValuesObject));
+
       if (result.success) {
         message.success("UPDATED");
+        setIsUpdateModalVisible(false);
+        setChildrenForms([]);
+        setDeletedChildForms([]); // Clear deleted child forms after successful update
         setLoading(false);
-
-        // setIsUpdateModalVisible(false);
       } else {
         message.error("ERROR OCCURRED");
+        setIsUpdateModalVisible(true);
       }
     } catch (error) {
       console.error("Error:", error);

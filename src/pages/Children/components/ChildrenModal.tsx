@@ -125,8 +125,8 @@ const ChildrenModal = ({
                   { required: true, message: "Please input the number!" },
                   {
                     min: 9,
-                    max: 11,
-                    message: "Number length must be 9 or 11!",
+                    max: 12,
+                    message: "Number length must be 9 or 12!",
                   },
                 ]}
               >
@@ -138,8 +138,8 @@ const ChildrenModal = ({
                 rules={[
                   {
                     min: 9,
-                    max: 11,
-                    message: "Number length must be 9 or 11!",
+                    max: 12,
+                    message: "Number length must be 9 or 12!",
                   },
                 ]}
               >
@@ -148,11 +148,11 @@ const ChildrenModal = ({
             </div>
 
             <div className="child_form_col">
-              {childrenForms.map((childForm, key) => (
+              {childrenForms.map((childForm,) => (
                 <ChildrenForm
-                  key={key}
-                  index={key}
-                  closeChildForm={closeChildForm}
+                closeChildForm={closeChildForm}
+                index={childForm.key}
+              
                 />
               ))}
               <Card id="add_card" style={{ padding: 0 }}>

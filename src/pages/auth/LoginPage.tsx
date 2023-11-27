@@ -6,7 +6,7 @@ import { LoginType } from "../../types/auth/authTypes";
 import { login } from "../../api/auth/loginAuth";
 import { validateEmail } from "../../utils/helper/validator";
 import "../auth/auth.scss";
-import { Logo } from "../../components/common/logos/Logo";
+import { Logo } from "../../components/common/logos";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../../redux/user/userDataReducer";
 import { useNavigate } from "react-router-dom";

@@ -6,7 +6,7 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 import "./layout.scss";
-import { Logo } from "../components/common/logos/Logo";
+import { Logo } from "../components/common/logos";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";

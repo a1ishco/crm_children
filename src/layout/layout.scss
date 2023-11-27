@@ -1,7 +1,8 @@
 .layout_all {
+  
   .ant_header,
   .antSider {
-    overflow: hidden;
+    overflow: hidden !important;
     background-color: #fcfbfc;
     .ant-menu,
     ul {
@@ -144,48 +145,56 @@
   height: 100%;
 }
 .header_right {
-  margin: 4px;
+  margin: 10px;
   font-weight: 600;
   color: #000;
   display: flex;
   flex-direction: column;
   gap: 15px;
   transition: all 0.3s;
+  justify-content: start;
   cursor: pointer;
-  align-items: left;
-  .ant-divider{
+  .ant-divider {
     margin: 0;
   }
   .user_settings {
     display: flex;
-    justify-content: space-around;
-    align-items: baseline;
+    align-items: center;
     .ant-avatar {
       width: 30px;
       height: 30px;
+      .anticon , .anticon-user{
+        font-size: 22px !important;
+  
+      }
     }
-    span {
+    span:nth-child(2) {
+      margin-left: 10px;
       text-wrap: wrap;
     }
   }
   #logout_btn {
     display: flex;
+    padding: 0;
     font-weight: 600;
     width: 100%;
     text-align: center;
     border: 0;
     color: #000;
     align-items: center;
+    background-color: transparent;
+    box-shadow: none;
     span:last-child {
-      margin-left: 25px;
+      margin-left: 10px;
     }
     svg {
-      font-size: 20px;
+      font-size: 29px;
     }
+    
   }
   #logout_btn:hover {
     color: #000;
-    background-color: #fff;
+    background-color: transparent;
   }
 }
 main {

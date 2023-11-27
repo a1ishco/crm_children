@@ -1,18 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-nocheck
-import React from "react"
-
-import {
-  Button,
-  Card,
-  Col,
-  Flex,
-  Row,
-  Spin,
-  Table,
-  Tooltip,
-  message,
-} from "antd";
+import React from "react";
+import { Button, Flex, Spin, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import {
   EditOutlined,
@@ -63,28 +52,28 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
       key: "actions",
       render: (text, record) => (
         <Flex className="table_buttons">
-            <Button
-              type="primary"
-              onClick={(e) => handleUpdate(record, e)}
-              id="edit_btn"
-            >
-              <EditOutlined />
-            </Button>
-            <Button
-              type="primary"
-              danger
-              onClick={(e) => handleDelete(record, e)}
-              id="delete_btn"
-            >
-              <DeleteOutlined />
-            </Button>
-            <Button
-              type="primary"
-              id="payment_btn"
-              onClick={(e) => handlePayment(record, e)}
-            >
-              <DollarOutlined />
-            </Button>
+          <Button
+            type="primary"
+            onClick={(e) => handleUpdate(record, e)}
+            id="edit_btn"
+          >
+            <EditOutlined />
+          </Button>
+          <Button
+            type="primary"
+            danger
+            onClick={(e) => handleDelete(record, e)}
+            id="delete_btn"
+          >
+            <DeleteOutlined />
+          </Button>
+          <Button
+            type="primary"
+            id="payment_btn"
+            onClick={(e) => handlePayment(record, e)}
+          >
+            <DollarOutlined />
+          </Button>
         </Flex>
       ),
     },
@@ -97,7 +86,6 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
       page: pagination.current ? pagination.current : 1,
       pageSize: pagination.pageSize,
     });
-    
   };
   const handleUpdate = (record) => {
     onUpdate(filteredData.find((item) => item.id === record.id));
@@ -113,16 +101,18 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
     try {
       const result = await childrenDelete("", id);
 
-      if (result.success) {
+      console.log("result.success", result === 204);
+      if (result.success || result) {
         message.success("DELETED");
-        fetchData(searchText);
+        fetchData(search, {
+          page: pagination.current ? pagination.current : 1,
+          pageSize: pagination.pageSize,
+        });
       } else {
         message.error("ERROR OCCURRED");
-        fetchData(searchText);
       }
     } catch (error) {
       console.error("An error occurred:", error);
-      fetchData(searchText);
       message.error("ERROR OCCURRED");
     }
   };
@@ -130,8 +120,6 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
   const fetchData = async (search, pagination) => {
     try {
       const result = await childrenGet("", search, pagination);
-      console.log(result);
-      
       dispatch(setCustomerChildData(result.data));
       if (result.success) {
         const updatedDataSource = result?.data?.results.map((item) => ({
@@ -156,7 +144,6 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
       page: pagination.current ? pagination.current : 1,
       pageSize: pagination.pageSize,
     });
-    
   }, [search, onUpdate, onCreate]);
 
   const filteredData = dataSource?.filter((item) =>
@@ -164,14 +151,7 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
       const dataIndex = column.dataIndex;
       const cellValue = item[dataIndex];
 
-      if (cellValue) {
-        const cellText =
-          typeof cellValue === "string" ? cellValue : cellValue.toString();
-        return cellText?.toLowerCase().includes(search?.toLowerCase());
-        //BAX
-      }
-
-      return false;
+      return cellValue;
     })
   );
   const filteredDataWithoutChildren = filteredData?.map(
@@ -181,27 +161,26 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
       return rest;
     }
   );
-  
 
   return (
     <div className="table_container">
-    <Spin spinning={!dataSource}>
-      <Table
-              dataSource={filteredDataWithoutChildren}
-              columns={columns}
-              pagination={pagination}
-              onChange={handleTableChange}
-              handleUpdate={handleUpdate}
-            />
-    </Spin>
-            
+      <Spin spinning={!dataSource}>
+        <Table
+          dataSource={filteredDataWithoutChildren}
+          columns={columns}
+          pagination={pagination}
+          onChange={handleTableChange}
+          handleUpdate={handleUpdate}
+        />
+      </Spin>
+
       <PaymentModal
         visible={isPaymentModalVisible}
         onCancel={() => setIsPaymentModalVisible(false)}
         record={paymentRecord}
         fetchData={fetchData}
-      /></div>
-      
+      />
+    </div>
   );
 };
 

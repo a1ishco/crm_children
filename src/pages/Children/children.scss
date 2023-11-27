@@ -107,13 +107,31 @@ table {
 .payment_modal {
   width: 500px !important;
   min-width: 10% !important;
-  .ant-spin-nested-loading{
+  .ant-spin-nested-loading {
     width: 100% !important;
   }
   .ant-form-item-control-input {
     width: fit-content;
   }
-  .ant-modal-body{
+  .payment_form_item {
+    .ant-form-item-control-input {
+      width: 100%;
+    }
+    .ant-form-item-control-input-content {
+      display: grid;
+      grid-template-columns: repeat(2, 2fr);
+      gap: 16px;
+
+      * {
+        font-size: 15px;
+      }
+
+      p {
+        margin: 0;
+      }
+    }
+  }
+  .ant-modal-body {
     max-height: 500px;
     overflow: auto;
   }
@@ -133,12 +151,11 @@ table {
       background-color: #21212160;
     }
   }
-  .button_payment_flex{
-    button:first-child{
+  .button_payment_flex {
+    button:first-child , button:first-child:hover{
       background-color: $green-color;
-
     }
-    button:last-child{
+    button:last-child , button:last-child:hover {
       background-color: $blue-color;
     }
   }
@@ -160,7 +177,7 @@ table {
   border-color: #212121;
   color: #fff;
 }
-.table_container{
+.table_container {
   padding: 10px 0 10px 0;
 }
 #search_input_table {
