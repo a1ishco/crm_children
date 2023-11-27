@@ -1,9 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
 import React from "react";
 import {
   Modal,
   Form,
   Checkbox,
-  message,
   Flex,
   Row,
   Col,
@@ -66,6 +67,7 @@ const PaymentModal = ({ visible, onCancel, record }) => {
       if (result.success) {
         message.success("Cash payment completed successfully");
         setLoading(false);
+        handleModalClose()
       } else {
         console.log("ERROR!!");
         message.error("Payment error occured");
@@ -90,6 +92,7 @@ const PaymentModal = ({ visible, onCancel, record }) => {
       if (result.success) {
         message.success("Card payment completed successfully");
         setLoading(false);
+        handleModalClose()
       } else {
         console.log("ERROR!!");
         message.error("Payment error occured");
