@@ -41,7 +41,9 @@ const PaymentModal = ({ visible, onCancel, record }) => {
         setLoadingPrices(false);
         setTotalPrices(result.data.data.total + " AZN");
       } else {
-        message.error(`Error occurred during payment: ${result.error}`);
+        message.error(`Error occured! Please select one of the child`);
+        setTotalPrices("")
+        setLoadingPrices(false)
       }
     } catch (error) {
       message.error("An error occurred during payment");
@@ -192,6 +194,7 @@ const ModalFooter = ({
             type="primary"
             loading={loading}
             onClick={onCashPaymentSubmit}
+            disabled={totalPrices===""}
           >
             Pay via Cash
           </Button>
@@ -201,6 +204,7 @@ const ModalFooter = ({
             htmlType="submit"
             loading={loading}
             onClick={onCardPaymentSubmit}
+            disabled={totalPrices===""}
           >
             Pay via Card
           </Button>
