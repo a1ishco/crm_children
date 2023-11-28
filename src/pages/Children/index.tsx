@@ -99,7 +99,6 @@ const Children = () => {
     setChildrenForms(updatedForms);
   };
   
-
   const getChildFormFields = (key) => {
     return {
       childFirstName: `child_first_name_${key}`,
@@ -155,6 +154,7 @@ const Children = () => {
       } else {
         message.error("ERROR OCCURRED");
         setIsCreateModalVisible(true);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -163,7 +163,7 @@ const Children = () => {
 
   const onFinishUpdate = async (values) => {
     setLoading(true);
-
+  
     try {
       const customerValues = {
         id: updateModalInitialValues?.id,
@@ -174,24 +174,27 @@ const Children = () => {
           values.phone_number_optional,
         ].filter(Boolean),
       };
-
+  
       const childFormValues = childrenForms.map((childForm, key) => {
         const childValues = form.getFieldsValue(
           Object.values(getChildFormFields(key))
         );
-
+          const birthDateValue = childValues[`child_birth_date_child_${key}`];
+        const birth_of_date =
+          birthDateValue !== undefined
+            ? new Date(birthDateValue).toISOString().split("T")[0]
+            : null;
+  
         return {
           id: updatedChildDatas[key]?.id,
           first_name: childValues[`child_first_name_${key}`],
           last_name: childValues[`child_last_name_${key}`],
           parent: childValues[`parent_full_name_${key}`],
-          birth_of_date: new Date(childValues[`child_birth_date_child_${key}`])
-            .toISOString()
-            .split("T")[0],
-          gender: childValues[`child_gender_child_${key}`] === "Male" ? 1 : 2,
+          birth_of_date: birth_of_date,
+          gender: childValues[`child_gender_child_${key}`],
         };
       });
-
+  
       const allValuesObject = {
         last_name: customerValues.last_name,
         first_name: customerValues.first_name,
@@ -199,14 +202,15 @@ const Children = () => {
         children: childFormValues,
         deleted_children: deletedChildForms,
       };
-console.log("AWAIT");
-
+  
+      console.log(allValuesObject);
+  
       const result = await childrenUpdate(
         allValuesObject,
         updateModalInitialValues?.id
       );
       dispatch(setCustomerChildData(allValuesObject));
-
+  
       if (result.success) {
         message.success("UPDATED");
         setIsUpdateModalVisible(false);
@@ -216,11 +220,13 @@ console.log("AWAIT");
       } else {
         message.error("ERROR OCCURRED");
         setIsUpdateModalVisible(true);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
+  
 
   const fetchData = async (searchParam) => {
     try {
@@ -291,5 +297,3 @@ console.log("AWAIT");
 };
 
 export default Children;
-
-// UPDATE *****
