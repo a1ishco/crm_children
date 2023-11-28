@@ -18,6 +18,7 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] =
     useState(false);
   const [deleteRecord, setDeleteRecord] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
   const [paymentRecord, setPaymentRecord] = useState(null);
   const [pagination, setPagination] = useState({
@@ -110,6 +111,7 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
 
   const handleDeleteConfirmation = async () => {
     const id = deleteRecord?.id;
+    setDeleteLoading(true)
     try {
       const result = await childrenDelete("", id);
 
@@ -122,8 +124,10 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
         setDeleteConfirmationVisible(false);
       } else {
         message.error("ERROR OCCURRED");
+        setDeleteLoading(false)
       }
     } catch (error) {
+      setDeleteLoading(false)
       console.error("An error occurred:", error);
       message.error("ERROR OCCURRED");
     }
@@ -168,6 +172,8 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
   );
   const filteredDataWithoutChildren = filteredData?.map(
     ({ children, ...rest }) => {
+      console.log(children);
+      console.clear();
       return rest;
     }
   );
@@ -191,29 +197,36 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
         fetchData={fetchData}
       />
 
-<Modal
-  title="Delete confirmation"
-  open={deleteConfirmationVisible}
-  onOk={handleDeleteConfirmation}
-  onCancel={handleCancelDelete}
-  okText="Delete"
-  cancelText="Cancel"
-  footer={
-    <Flex justify="space-between">
-      <Button key="cancel" onClick={handleCancelDelete} id="cancel_btn">
-        Cancel
-      </Button>
-      <Button key="delete" type="danger" onClick={handleDeleteConfirmation} id="delete_btn_modal">
-        Delete
-      </Button>
-    </Flex>
-  }
->
-  {deleteRecord && (
-    <p>{`Are you sure to delete Customer: ${deleteRecord?.first_name+" "+deleteRecord?.last_name} ?`}</p>
-  )}
-</Modal>
-
+      <Modal
+        title="Delete confirmation"
+        open={deleteConfirmationVisible}
+        onOk={handleDeleteConfirmation}
+        onCancel={handleCancelDelete}
+        okText="Delete"
+        cancelText="Cancel"
+        footer={
+          <Flex justify="space-between">
+            <Button key="cancel" onClick={handleCancelDelete} id="cancel_btn">
+              Cancel
+            </Button>
+            <Button
+              key="delete"
+              type="danger"
+              onClick={handleDeleteConfirmation}
+              id="delete_btn_modal"
+              loading={deleteLoading}
+            >
+              Delete
+            </Button>
+          </Flex>
+        }
+      >
+        {deleteRecord && (
+          <p>{`Are you sure to delete Customer: ${
+            deleteRecord?.first_name + " " + deleteRecord?.last_name
+          } ?`}</p>
+        )}
+      </Modal>
     </div>
   );
 };

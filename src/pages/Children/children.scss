@@ -66,7 +66,8 @@
 #edit_btn {
   background-color: $blue-color;
 }
-#delete_btn, #delete_btn_modal {
+#delete_btn,
+#delete_btn_modal {
   background-color: $red-color;
   color: #fff;
 }
@@ -153,10 +154,12 @@ table {
     }
   }
   .button_payment_flex {
-    button:first-child , button:first-child:hover{
+    button:first-child,
+    button:first-child:hover {
       background-color: $green-color;
     }
-    button:last-child , button:last-child:hover {
+    button:last-child,
+    button:last-child:hover {
       background-color: $blue-color;
     }
   }
@@ -177,6 +180,9 @@ table {
   background-color: #212121;
   border-color: #212121;
   color: #fff;
+}
+.ant-table-content {
+  overflow: auto;
 }
 .table_container {
   padding: 10px 0 10px 0;

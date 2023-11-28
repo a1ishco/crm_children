@@ -132,8 +132,8 @@ const Children = () => {
           birth_of_date: new Date(childValues[`child_birth_date_child_${key}`])
             .toISOString()
             .split("T")[0],
-          gender: childValues[`child_gender_child_${key}`],
-        };
+            gender: childValues[`child_gender_child_${key}`] === 'male' ? 1 : 2,
+          };
       });
 
       const allValuesObject = {
@@ -191,7 +191,7 @@ const Children = () => {
           last_name: childValues[`child_last_name_${key}`],
           parent: childValues[`parent_full_name_${key}`],
           birth_of_date: birth_of_date,
-          gender: childValues[`child_gender_child_${key}`],
+          gender: childValues[`child_gender_child_${key}`] === 'male' ? 1 : 2,
         };
       });
   
