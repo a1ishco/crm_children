@@ -192,7 +192,6 @@ const Children = () => {
         };
       });
 
-      // Include deleted child IDs in the update request
       const allValuesObject = {
         last_name: customerValues.last_name,
         first_name: customerValues.first_name,
@@ -200,20 +199,19 @@ const Children = () => {
         children: childFormValues,
         deleted_children: deletedChildForms,
       };
+console.log("AWAIT");
 
       const result = await childrenUpdate(
         allValuesObject,
         updateModalInitialValues?.id
       );
-      console.log("allValuesObject", allValuesObject);
-      console.log("childFormValues", childFormValues);
       dispatch(setCustomerChildData(allValuesObject));
 
       if (result.success) {
         message.success("UPDATED");
         setIsUpdateModalVisible(false);
         setChildrenForms([]);
-        setDeletedChildForms([]); // Clear deleted child forms after successful update
+        setDeletedChildForms([]);
         setLoading(false);
       } else {
         message.error("ERROR OCCURRED");

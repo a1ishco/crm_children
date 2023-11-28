@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-nocheck
 import React from "react";
-import { Button, Flex, Spin, Table, message } from "antd";
+import { Button, Flex, Modal, Spin, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import {
   EditOutlined,
@@ -15,6 +15,9 @@ import PaymentModal from "../components/PaymentModal";
 const ChildrenTable = ({ onUpdate, search, onCreate }) => {
   const dispatch = useDispatch();
   const [dataSource, setDataSource] = useState(null);
+  const [deleteConfirmationVisible, setDeleteConfirmationVisible] =
+    useState(false);
+  const [deleteRecord, setDeleteRecord] = useState(null);
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
   const [paymentRecord, setPaymentRecord] = useState(null);
   const [pagination, setPagination] = useState({
@@ -62,7 +65,7 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
           <Button
             type="primary"
             danger
-            onClick={(e) => handleDelete(record, e)}
+            onClick={() => showDeleteConfirmation(record)}
             id="delete_btn"
           >
             <DeleteOutlined />
@@ -96,18 +99,27 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
     setIsPaymentModalVisible(true);
   };
 
-  const handleDelete = async (record) => {
-    const id: number = record.id;
+  const showDeleteConfirmation = (record) => {
+    setDeleteRecord(record);
+    setDeleteConfirmationVisible(true);
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteConfirmationVisible(false);
+  };
+
+  const handleDeleteConfirmation = async () => {
+    const id = deleteRecord?.id;
     try {
       const result = await childrenDelete("", id);
 
-      console.log("result.success", result === 204);
       if (result.success || result) {
         message.success("DELETED");
         fetchData(search, {
           page: pagination.current ? pagination.current : 1,
           pageSize: pagination.pageSize,
         });
+        setDeleteConfirmationVisible(false);
       } else {
         message.error("ERROR OCCURRED");
       }
@@ -156,8 +168,6 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
   );
   const filteredDataWithoutChildren = filteredData?.map(
     ({ children, ...rest }) => {
-      console.log(children);
-      console.clear();
       return rest;
     }
   );
@@ -180,6 +190,30 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
         record={paymentRecord}
         fetchData={fetchData}
       />
+
+<Modal
+  title="Delete confirmation"
+  open={deleteConfirmationVisible}
+  onOk={handleDeleteConfirmation}
+  onCancel={handleCancelDelete}
+  okText="Delete"
+  cancelText="Cancel"
+  footer={
+    <Flex justify="space-between">
+      <Button key="cancel" onClick={handleCancelDelete} id="cancel_btn">
+        Cancel
+      </Button>
+      <Button key="delete" type="danger" onClick={handleDeleteConfirmation} id="delete_btn_modal">
+        Delete
+      </Button>
+    </Flex>
+  }
+>
+  {deleteRecord && (
+    <p>{`Are you sure to delete Customer: ${deleteRecord?.first_name+" "+deleteRecord?.last_name} ?`}</p>
+  )}
+</Modal>
+
     </div>
   );
 };

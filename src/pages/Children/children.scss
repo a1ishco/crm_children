@@ -66,8 +66,9 @@
 #edit_btn {
   background-color: $blue-color;
 }
-#delete_btn {
+#delete_btn, #delete_btn_modal {
   background-color: $red-color;
+  color: #fff;
 }
 #payment_btn {
   background-color: $green-color;
