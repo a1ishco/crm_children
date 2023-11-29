@@ -12,17 +12,18 @@ const ChildrenForm = ({ index, closeChildForm }) => {
           <CloseOutlined />
         </Button>
       </div>
+      <Flex justify="space-between" className="children_form">
       <Form.Item
         name={`child_first_name_${index}`}
         label="Child First Name"
         rules={[
           {
             required: true,
-            message: "Please input the child's first name!",
+            message: "Fill the field!",
           },
         ]}
       >
-        <Input />
+        <Input width={"100%"}/>
       </Form.Item>
       <Form.Item
         name={`child_last_name_${index}`}
@@ -30,32 +31,33 @@ const ChildrenForm = ({ index, closeChildForm }) => {
         rules={[
           {
             required: true,
-            message: "Please input the child's last name!",
+            message: "Fill the field!",
           },
         ]}
       >
         <Input />
       </Form.Item>
-      <Flex align="end">
+      </Flex>
         <Form.Item
           name={`parent_full_name_${index}`}
           label="Parent`s full name"
           rules={[
             {
               required: true,
-              message: "Please input the parent's full name!",
+              message: "Fill the field!",
             },
           ]}
         >
-          <Input />
+        <Input width={"100%"}/>
         </Form.Item>
+        <Flex justify="space-between" className="children_form">
         <Form.Item
           name={`child_birth_date_child_${index}`}
           label="Child Birth Date"
           rules={[
             {
               required: true,
-              message: "Please input the child's birth date!",
+              message: "Fill the field!",
             },
           ]}
         >
@@ -67,7 +69,7 @@ const ChildrenForm = ({ index, closeChildForm }) => {
           rules={[
             {
               required: true,
-              message: "Please select the child's gender!",
+              message: "Fill the field!",
             },
           ]}
         >

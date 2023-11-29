@@ -15,6 +15,7 @@ import PaymentModal from "../components/PaymentModal";
 const ChildrenTable = ({ onUpdate, search, onCreate }) => {
   const dispatch = useDispatch();
   const [dataSource, setDataSource] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] =
     useState(false);
   const [deleteRecord, setDeleteRecord] = useState(null);
@@ -111,12 +112,13 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
 
   const handleDeleteConfirmation = async () => {
     const id = deleteRecord?.id;
-    setDeleteLoading(true)
+    setDeleteLoading(true);
     try {
       const result = await childrenDelete("", id);
 
       if (result.success || result) {
         message.success("DELETED");
+        setDeleteLoading(false);
         fetchData(search, {
           page: pagination.current ? pagination.current : 1,
           pageSize: pagination.pageSize,
@@ -124,10 +126,10 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
         setDeleteConfirmationVisible(false);
       } else {
         message.error("ERROR OCCURRED");
-        setDeleteLoading(false)
+        setDeleteLoading(false);
       }
     } catch (error) {
-      setDeleteLoading(false)
+      setDeleteLoading(false);
       console.error("An error occurred:", error);
       message.error("ERROR OCCURRED");
     }
@@ -135,6 +137,7 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
 
   const fetchData = async (search, pagination) => {
     try {
+      setLoading(true)
       const result = await childrenGet("", search, pagination);
       dispatch(setCustomerChildData(result.data));
       if (result.success) {
@@ -152,6 +155,9 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
       }
     } catch (error) {
       console.error("Error:", error);
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -180,7 +186,7 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
 
   return (
     <div className="table_container">
-      <Spin spinning={!dataSource}>
+      <Spin spinning={!dataSource || loading}>
         <Table
           dataSource={filteredDataWithoutChildren}
           columns={columns}
@@ -205,7 +211,7 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
         okText="Delete"
         cancelText="Cancel"
         footer={
-          <Flex justify="space-between">
+          <Flex justify="end">
             <Button key="cancel" onClick={handleCancelDelete} id="cancel_btn">
               Cancel
             </Button>
@@ -221,10 +227,14 @@ const ChildrenTable = ({ onUpdate, search, onCreate }) => {
           </Flex>
         }
       >
-        {deleteRecord && (
-          <p>{`Are you sure to delete Customer: ${
-            deleteRecord?.first_name + " " + deleteRecord?.last_name
-          } ?`}</p>
+        {deleteRecord &&  (
+          <>
+            <b style={{ textAlign: "center" }}>
+              Are you sure to delete customer datas?
+            </b>
+            <p>First name: {deleteRecord?.first_name}</p>
+            <p>Last name: {deleteRecord?.last_name}</p>
+          </>
         )}
       </Modal>
     </div>

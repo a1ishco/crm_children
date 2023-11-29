@@ -40,6 +40,12 @@
     width: 100% !important;
     .ant-flex {
       gap: 10px;
+      .children_form{
+        .ant-form-item{
+
+          width: 100% !important;
+        }
+      }
     }
   }
 }
