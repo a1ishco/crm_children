@@ -111,7 +111,6 @@ const PaymentModal = ({ visible, onCancel, record }) => {
       title="Payment"
       open={visible}
       onCancel={handleModalClose}
-      footer={null}
       className="payment_modal"
       destroyOnClose
       footer={

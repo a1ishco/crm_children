@@ -4,6 +4,7 @@
     display: flex;
     justify-content: center;
     min-height: 100vh;
+    overflow: hidden;
     .form_container{
         border: 1px solid rgba(0,0,0,.1);
         border-radius: 8px;
