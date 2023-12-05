@@ -1,4 +1,3 @@
-import React from 'react';
 import { Flex } from 'antd';
 
 const PageHeader = ({ title, subtitle, extras }) => {

@@ -1,4 +1,3 @@
-import React from "react"
 import { useState } from "react";
 import { Button, Form, Input, message } from "antd";
 import { AiOutlineUser, AiOutlineLock } from "react-icons/ai";

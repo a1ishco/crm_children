@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-nocheck
-import React from "react";
 import { Button, Flex, Modal, Spin, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import {

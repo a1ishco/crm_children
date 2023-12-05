@@ -1,4 +1,3 @@
-import React from "react"
 import { Card, Button, Form, Input, DatePicker, Select, Flex } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 
