@@ -1,0 +1,10 @@
+version: "3.3"
+
+services:
+  front:
+    build:
+      context: .
+    container_name: news
+    restart: "always"
+    ports:
+      - 3000:3000
